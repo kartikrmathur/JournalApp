@@ -22,11 +22,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public void saveEntry(User user){
-        try{
-            userRepository.save(user);
-        }catch (Exception e){
-            log.error("Exception", e);
-        }
+        userRepository.save(user);
     }
 
     public List<User> getAll(){
@@ -43,16 +39,6 @@ public class UserService {
 
     public User findByUserName(String userName){
         return userRepository.findByUserName(userName);
-    }
-
-    public void deleteUsersWithNullUserName(){
-        List<User> allUsers = userRepository.findAll();
-        allUsers.stream()
-                .filter(user -> user.getUserName() == null)
-                .forEach(user -> {
-                    log.info("Deleting user with null userName, id: {}", user.getId());
-                    userRepository.deleteById(user.getId());
-                });
     }
 
 }
