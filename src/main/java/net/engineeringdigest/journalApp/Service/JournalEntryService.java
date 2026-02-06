@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class JournalEntryService {
@@ -23,16 +24,19 @@ public class JournalEntryService {
     @Autowired
     private UserService userService;
 
-    public JournalEntry saveEntry(JournalEntry journalEntry, String userName){
-        User user = userService.findByUserName(userName);
-//        if (user == null) {
-//            user = userService.createUser(userName);
-//        }
-        journalEntry.setDate(LocalDateTime.now());
-        JournalEntry saved = journalEntryRepository.save(journalEntry);
-        user.getJournalEntries().add(saved);
-        userService.saveEntry(user);
-        return saved;
+//    potray as a single transaction
+    @Transactional
+    public void saveEntry(JournalEntry journalEntry, String userName){
+        try{
+            User user = userService.findByUserName(userName);
+            journalEntry.setDate(LocalDateTime.now());
+            JournalEntry saved = journalEntryRepository.save(journalEntry);
+            user.getJournalEntries().add(saved);
+            userService.saveEntry(user);
+        } catch (Exception e){
+            System.out.println(e);
+            throw new RuntimeException("An error occured while saving the entry.",e);
+        }
     }
 
     public void saveEntry(JournalEntry journalEntry){
