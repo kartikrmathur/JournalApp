@@ -34,7 +34,10 @@ public class JournalEntryController {
         User user = userService.findByUserName(userName);
         List<JournalEntry> all = user.getJournalEntries();
         if (all != null && !all.isEmpty()) {
-            return new ResponseEntity<>(all, HttpStatus.OK);
+            List<JournalEntryResponse> responses = all.stream()
+                    .map(JournalEntryResponse::from)
+                    .collect(Collectors.toList());
+            return new ResponseEntity<>(responses, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -61,7 +64,8 @@ public class JournalEntryController {
         if (!collect.isEmpty()) {
             Optional<JournalEntry> journalEntry= journalEntryService.findById(myId);
             if(journalEntry.isPresent()){
-                return new ResponseEntity<>(journalEntry.get(), HttpStatus.OK);
+                JournalEntryResponse response = JournalEntryResponse.from(journalEntry.get());
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -92,7 +96,8 @@ public class JournalEntryController {
                 old.setTitle(newEntry.getTitle() != null && !newEntry.getTitle().equals("") ? newEntry.getTitle() : old.getTitle());
                 old.setContent(newEntry.getContent() != null && !newEntry.getContent().equals("") ? newEntry.getContent() : old.getContent());
                 journalEntryService.saveEntry(old);
-                return new ResponseEntity<>(old, HttpStatus.OK);
+                JournalEntryResponse response = JournalEntryResponse.from(old);
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
