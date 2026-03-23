@@ -1,10 +1,11 @@
 spring:
   data:
-    uri: mongodb+srv://kartiksmathur_db_user:Kartik123@cluster0.blwxotn.mongodb.net/journaldb?retryWrites=true&w=majority&appName=Cluster0&authSource=admin
-    database: journaldb
-    auto-index-creation : true
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/journaldb}
+      database: journaldb
+      auto-index-creation: true
 
-  server:
-    port: 8080
-    servlet:
-      context-path: /journal
+server:
+  port: 8080
+  servlet:
+    context-path: /journal
