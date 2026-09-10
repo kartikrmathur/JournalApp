@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### IDE run configurations (may contain secrets) ###
+.run/
+*.run.xml
