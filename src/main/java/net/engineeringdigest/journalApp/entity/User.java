@@ -22,12 +22,13 @@ public class User {
     @Indexed(unique = true)
     @NonNull
     private String userName;
+    private String email;
+    private boolean sentimentAnalysis;
     @NonNull
     private String password;
 //parent child relation-ship
     @DBRef
     private List<JournalEntry> journalEntries = new ArrayList<>();
-
     private List<String> roles;
 
 }

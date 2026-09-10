@@ -32,6 +32,12 @@ build/
 ### VS Code ###
 .vscode/
 
-### IDE run configurations (may contain secrets) ###
+### IDE run configurations (contain secrets) ###
 .run/
 *.run.xml
+
+### Application logs ###
+*.log
+
+### Cursor ###
+.cursor/
